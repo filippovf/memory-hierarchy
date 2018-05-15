@@ -5,7 +5,7 @@ A bash shell script to show information about memory hierarchy. Designed to illu
 Tested in Ubuntu 16.04LTS and 18.04LTS and also in Ubuntu at Windows Subsystem for Linux, but should work in any Linux distribution.
 
 
-==========================================================================================================================================
+=====================================================================
 
 pt-br
 
