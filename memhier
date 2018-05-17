@@ -26,7 +26,7 @@ free -h | head -n2
 
 #MEMÓRIA SECUNDÁRIA
 echo -e "\n\nMEMÓRIA SECUNDÁRIA:\n"
-df -h | head -n1 && df -h | grep -i mnt || df -h | grep -i sd
+df -ha | head -n1 && df -ha | grep -i mnt || df -ha | grep -i sd
 
 
 #MEMÓRIA VIRTUAL
