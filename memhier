@@ -1,8 +1,8 @@
 #!/bin/bash
 #Script para informações sobre a hierarquia de memória do computador.
 #Prof. Filippo Valiante Filho
-#Version 1.01
-#2018-05-15
+#Version 1.02
+#2018-05-dd
 
 
 #Verificação prévia da configuração de swap
