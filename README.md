@@ -1,6 +1,6 @@
 # memory-hierarchy
 
-[b]* For English just navigate to the apropriate folder.
+* For **English** just navigate to the appropriated folder.
 
 Um script bash shell que mostra informações sobre a hierarquia de memória. Projetado para ilustrar aulas de graduação de arquitetura e organização de computadores e sistemas operacionais.
 
