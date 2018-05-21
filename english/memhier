@@ -8,35 +8,36 @@
 #O cálculo do % da memória principal a partir da qual se inicia o uso do swap é feito com $((100-valorswap))
 valorswap=$(cat /proc/sys/vm/swappiness)
 
-
 #Início das informações
 clear
+echo -e "\nHierarquia de Memória:\n"
 
 #MEMÓRIA CACHE
-echo -e "\nMEMÓRIA CACHE:\n"
+echo -e "\nMEMÓRIA CACHE\n"
 echo -e -n "Microprocessador ["$(lscpu | grep -i nome || lscpu | grep -i name)"] com a seguinte configuração de memória cache:\n\n"
 lscpu | grep cache
 
-
 #MEMÓRIA PRINCIPAL
-echo -e "\n\nMEMÓRIA PRINCIPAL:\n"
+echo -e "\n\nMEMÓRIA PRINCIPAL\n"
 free -h | head -n2
 
-
 #MEMÓRIA SECUNDÁRIA
-echo -e "\n\nMEMÓRIA SECUNDÁRIA:\n"
-lsblk --output VENDOR,MODEL,STATE,TRAN,NAME,TYPE,SIZE,FSTYPE,MOUNTPOINT,HOTPLUG --exclude 7
-#df -ha | head -n1 && df -ha | grep -i mnt || df -ha | grep -i sd
+echo -e "\n\nMEMÓRIA SECUNDÁRIA\n"
+lsblk --output VENDOR,MODEL,STATE,TRAN,NAME,TYPE,SIZE,FSTYPE,MOUNTPOINT,HOTPLUG --exclude 7 || echo "Houve um erro na obtenção de informações sobre a memória secundária. Talvez você esteja executando o subsistema Linux do Windows."
 
+echo -e "\n\nPara ver o uso de sua memória secundária execute 'df -h'. Se quiser uma saída mais legível e melhor filtrada, use 'df -ha | head -n1 && df -ha | grep -i sd'. Caso esteja executando no Subsistema Linux do Windows substitua sd por mnt."
+echo -e "\nPara ver mais informações sobre seu hardware de memória execute o comando 'lshw' como administrador (sudo lshw). Será mais fácil visualizar as informações executando 'sudo lshw -html > hwinfo.html' e abrindo o arquivo no navegador.\n"
+
+#Faz aguardar uma tecla par continuar.
+read -r -p "***   Pressione qualquer tecla para ver informações sobre a MEMÓRIA VIRTUAL.   ***" -n 1
 
 #MEMÓRIA VIRTUAL
-echo -e "\n\nMEMÓRIA VIRTUAL - SWAP:\n"
+echo -e "\n\nMEMÓRIA VIRTUAL - SWAP\n"
 free -h | head -n1
 free -h | grep -i swap
 echo -e -n "\nSwap configurado em ["$(cut -c 1-14 < /proc/swaps | tail -n1)"].\n"
 
-
-echo -e "\n\nMEMÓRIA VIRTUAL - TOTAL:\n"
+echo -e "\n\nMEMÓRIA VIRTUAL - TOTAL\n"
 free -h | head -n1
 free -ht | tail -n1
 
@@ -44,7 +45,5 @@ echo -e "\n\nO espaço de endereçamento está organizado da seguinte forma:\n"
 cat /proc/cpuinfo | grep address | head -n1
 
 echo -e "\n\nSeu sistema está configurado para começar a usar swap a partir de [$((100-valorswap))%] de uso da memória principal.\n"
-
-echo -e 'Para alterar edite como superusuário o arquivo /etc/sysctl.conf e acrescente, ou remova o comentário, da linha vm.swappiness. Por exemplo, vm.swappiness=10 indica que o swap inicia apenas com 90% de uso da memória principal. O valor padrão 60 indica que o swap inicia a partir de 40% de uso da memória principal.\n'
-
+echo -e '\nPara alterar edite como superusuário o arquivo /etc/sysctl.conf e acrescente, ou remova o comentário, da linha vm.swappiness. Por exemplo, vm.swappiness=10 indica que o swap inicia apenas com 90% de uso da memória principal. O valor padrão 60 indica que o swap inicia a partir de 40% de uso da memória principal.\n'
 echo ""
