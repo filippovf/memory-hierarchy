@@ -28,7 +28,7 @@ lsblk --output VENDOR,MODEL,STATE,TRAN,NAME,TYPE,SIZE,FSTYPE,MOUNTPOINT,HOTPLUG 
 echo -e "\n\nPara ver o uso de sua memória secundária execute 'df -h'. Se quiser uma saída mais legível e melhor filtrada, use 'df -ha | head -n1 && df -ha | grep -i sd'. Caso esteja executando no Subsistema Linux do Windows substitua sd por mnt."
 echo -e "\nPara ver mais informações sobre seu hardware de memória execute o comando 'lshw' como administrador (sudo lshw). Será mais fácil visualizar as informações executando 'sudo lshw -html > hwinfo.html' e abrindo o arquivo no navegador.\n"
 
-#Faz aguardar uma tecla par continuar.
+#Faz aguardar uma tecla para continuar.
 read -r -p "***   Pressione qualquer tecla para ver informações sobre a MEMÓRIA VIRTUAL.   ***" -n 1
 
 #MEMÓRIA VIRTUAL
