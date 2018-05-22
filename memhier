@@ -23,7 +23,7 @@ free -h | head -n2
 
 #MEMÓRIA SECUNDÁRIA
 echo -e "\n\nMEMÓRIA SECUNDÁRIA\n"
-lsblk --output VENDOR,MODEL,STATE,TRAN,NAME,TYPE,SIZE,FSTYPE,MOUNTPOINT,HOTPLUG --exclude 7 || echo "Houve um erro na obtenção de informações sobre a memória secundária. Talvez você esteja executando o subsistema Linux do Windows."
+lsblk --output VENDOR,MODEL,STATE,TRAN,NAME,TYPE,SIZE,FSTYPE,MOUNTPOINT,HOTPLUG --exclude 7
 
 echo -e "\n\nPara ver o uso de sua memória secundária execute 'df -h'. Se quiser uma saída mais legível e melhor filtrada, use 'df -ha | head -n1 && df -ha | grep -i sd'. Caso esteja executando no Subsistema Linux do Windows substitua sd por mnt."
 echo -e "\nPara ver mais informações sobre seu hardware de memória execute o comando 'lshw' como administrador (sudo lshw). Será mais fácil visualizar as informações executando 'sudo lshw -html > hwinfo.html' e abrindo o arquivo no navegador.\n"
