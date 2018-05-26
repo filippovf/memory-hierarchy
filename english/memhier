@@ -47,5 +47,5 @@ cat /proc/cpuinfo | grep address | head -n1
 
 echo -e "\n\nYour system is configured to start using swap with [$((100-valorswap))%] of use of the main memory.\n"
 
-echo -e '\nTo alter this, edit the file /etc/sysctl.conf as superuser and add, or uncomment, the line vm.swappiness. E.g. vm.swappiness=10 tells the system to start using swap only after using 90% of the main memory. The standard value of 60 tells the system to start using swap with just 40% of main memory's usage.\n'
+echo -e '\nTo alter this, edit the file /etc/sysctl.conf as superuser and add, or uncomment, the line vm.swappiness. E.g. vm.swappiness=10 tells the system to start using swap only after using 90% of the main memory. The standard value of 60 tells the system to start using swap with just 40% of main memory\'s usage.\n'
 echo ""
