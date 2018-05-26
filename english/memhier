@@ -2,48 +2,50 @@
 ##Script to show information regarding computer's memory hierarchy.
 #Prof. Filippo Valiante Filho
 #Version 1.02
-#2018-05-dd
+#2018-05-25
 
-#Verificação prévia da configuração de swap
-#O cálculo do % da memória principal a partir da qual se inicia o uso do swap é feito com $((100-valorswap))
+#Previous verification of swap configuration.
+#The % of use of the main memory where the system starts to use swap is calculated using $((100-valorswap)).
 valorswap=$(cat /proc/sys/vm/swappiness)
 
-#Início das informações
+#Beginning of information
 clear
-echo -e "\nHierarquia de Memória:\n"
+echo -e "\nMemory Hierarchy:\n"
 
-#MEMÓRIA CACHE
-echo -e "\nMEMÓRIA CACHE\n"
-echo -e -n "Microprocessador ["$(lscpu | grep -i nome || lscpu | grep -i name)"] com a seguinte configuração de memória cache:\n\n"
+#CACHE MEMORY
+echo -e "\nCACHE MEMORY\n"
+echo -e -n "Microprocessor ["$(lscpu | grep -i nome || lscpu | grep -i name)"] with the following cache memory configuration:\n\n"
 lscpu | grep cache
 
-#MEMÓRIA PRINCIPAL
-echo -e "\n\nMEMÓRIA PRINCIPAL\n"
+#MAIN MEMORY
+echo -e "\n\nMAIN MEMORY\n"
 free -h | head -n2
 
-#MEMÓRIA SECUNDÁRIA
-echo -e "\n\nMEMÓRIA SECUNDÁRIA\n"
+#SECONDARY MEMORY
+echo -e "\n\nSECONDARY MEMORY\n"
 lsblk --output VENDOR,MODEL,STATE,TRAN,NAME,TYPE,SIZE,FSTYPE,MOUNTPOINT,HOTPLUG --exclude 7
 
-echo -e "\n\nPara ver o uso de sua memória secundária execute 'df -h'. Se quiser uma saída mais legível e melhor filtrada, use 'df -ha | head -n1 && df -ha | grep -i sd'. Caso esteja executando no Subsistema Linux do Windows substitua sd por mnt."
-echo -e "\nPara ver mais informações sobre seu hardware de memória execute o comando 'lshw' como administrador (sudo lshw). Será mais fácil visualizar as informações executando 'sudo lshw -html > hwinfo.html' e abrindo o arquivo no navegador.\n"
+echo -e "\n\nTo see information about the secondary memory run  'df -h'. If you want something more readable try 'df -ha | head -n1 && df -ha | grep -i sd'."
 
-#Faz aguardar uma tecla para continuar.
-read -r -p "***   Pressione qualquer tecla para ver informações sobre a MEMÓRIA VIRTUAL.   ***" -n 1
+echo -e "\nTo see more information regarding your memory's hardware run 'lshw' as administrator (sudo lshw). Information will be easier to visualize if you run  'sudo lshw -html > hwinfo.html' and open the file in the web browser.\n"
+
+#Waits for a key before continuing.
+read -r -p "***   Press any key to see information regarding VIRTUAL MEMORY.   ***" -n 1
 
 #MEMÓRIA VIRTUAL
-echo -e "\n\nMEMÓRIA VIRTUAL - SWAP\n"
+echo -e "\n\nVIRTUAL MEMORY - SWAP\n"
 free -h | head -n1
 free -h | grep -i swap
-echo -e -n "\nSwap configurado em ["$(cut -c 1-14 < /proc/swaps | tail -n1)"].\n"
+echo -e -n "\nSwap configured in ["$(cut -c 1-14 < /proc/swaps | tail -n1)"].\n"
 
-echo -e "\n\nMEMÓRIA VIRTUAL - TOTAL\n"
+echo -e "\n\nVIRTUAL MEMORY - TOTAL\n"
 free -h | head -n1
 free -ht | tail -n1
 
-echo -e "\n\nO espaço de endereçamento está organizado da seguinte forma:\n"
+echo -e "\n\nThe address space is organized as follows:\n"
 cat /proc/cpuinfo | grep address | head -n1
 
-echo -e "\n\nSeu sistema está configurado para começar a usar swap a partir de [$((100-valorswap))%] de uso da memória principal.\n"
-echo -e '\nPara alterar edite como superusuário o arquivo /etc/sysctl.conf e acrescente, ou remova o comentário, da linha vm.swappiness. Por exemplo, vm.swappiness=10 indica que o swap inicia apenas com 90% de uso da memória principal. O valor padrão 60 indica que o swap inicia a partir de 40% de uso da memória principal.\n'
+echo -e "\n\nYour system is configured to start using swap with [$((100-valorswap))%] of use of the main memory.\n"
+
+echo -e '\nTo alter this, edit the file /etc/sysctl.conf as superuser and add, or uncomment, the line vm.swappiness. E.g. vm.swappiness=10 tells the system to start using swap only after using 90% of the main memory. The standard value of 60 tells the system to start using swap with just 40% of main memory's usage.\n'
 echo ""
