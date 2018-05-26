@@ -30,7 +30,7 @@ echo -e "\n\nTo see information about the secondary memory run  'df -h'. If you 
 echo -e "\nTo see more information regarding your memory's hardware run 'lshw' as administrator (sudo lshw). Information will be easier to visualize if you run  'sudo lshw -html > hwinfo.html' and open the file in the web browser.\n"
 
 #Waits for a key before continuing.
-read -r -p "***   Press any key to see information regarding VIRTUAL MEMORY.   ***" -n 1
+read -r -p "***   Press any key to see information about VIRTUAL MEMORY.   ***" -n 1
 
 #MEMÓRIA VIRTUAL
 echo -e "\n\nVIRTUAL MEMORY - SWAP\n"
@@ -47,5 +47,5 @@ cat /proc/cpuinfo | grep address | head -n1
 
 echo -e "\n\nYour system is configured to start using swap with [$((100-valorswap))%] of use of the main memory.\n"
 
-echo -e '\nTo alter this, edit the file /etc/sysctl.conf as superuser and add, or uncomment, the line vm.swappiness. E.g. vm.swappiness=10 tells the system to start using swap only after using 90% of the main memory. The standard value of 60 tells the system to start using swap with just 40% of main memory\'s usage.\n'
+echo -e "\nTo alter this, edit the file /etc/sysctl.conf as superuser and add, or uncomment, the line vm.swappiness. E.g. vm.swappiness=10 tells the system to start using swap only after using 90% of the main memory. The standard value of 60 tells the system to start using swap with just 40% of main memory's usage.\n"
 echo ""
