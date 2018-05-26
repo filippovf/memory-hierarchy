@@ -1,0 +1,51 @@
+#!/bin/bash
+##Script to show information regarding computer's memory hierarchy.
+#Prof. Filippo Valiante Filho
+#Version 1.02
+#2018-05-25
+
+#Previous verification of swap configuration.
+#The % of use of the main memory where the system starts to use swap is calculated using $((100-valorswap)).
+valorswap=$(cat /proc/sys/vm/swappiness)
+
+#Beginning of information
+clear
+echo -e "\nMemory Hierarchy:\n"
+
+#CACHE MEMORY
+echo -e "\nCACHE MEMORY\n"
+echo -e -n "Microprocessor ["$(lscpu | grep -i nome || lscpu | grep -i name)"] with the following cache memory configuration:\n\n"
+lscpu | grep cache
+
+#MAIN MEMORY
+echo -e "\n\nMAIN MEMORY\n"
+free -h | head -n2
+
+#SECONDARY MEMORY
+echo -e "\n\nSECONDARY MEMORY\n"
+lsblk --output VENDOR,MODEL,STATE,TRAN,NAME,TYPE,SIZE,FSTYPE,MOUNTPOINT,HOTPLUG --exclude 7
+
+echo -e "\n\nTo see information about the secondary memory run  'df -h'. If you want something more readable try 'df -ha | head -n1 && df -ha | grep -i sd'."
+
+echo -e "\nTo see more information regarding your memory's hardware run 'lshw' as administrator (sudo lshw). Information will be easier to visualize if you run  'sudo lshw -html > hwinfo.html' and open the file in the web browser.\n"
+
+#Waits for a key before continuing.
+read -r -p "***   Press any key to see information about VIRTUAL MEMORY.   ***" -n 1
+
+#MEMÓRIA VIRTUAL
+echo -e "\n\nVIRTUAL MEMORY - SWAP\n"
+free -h | head -n1
+free -h | grep -i swap
+echo -e -n "\nSwap configured in ["$(cut -c 1-14 < /proc/swaps | tail -n1)"].\n"
+
+echo -e "\n\nVIRTUAL MEMORY - TOTAL\n"
+free -h | head -n1
+free -ht | tail -n1
+
+echo -e "\n\nThe address space is organized as follows:\n"
+cat /proc/cpuinfo | grep address | head -n1
+
+echo -e "\n\nYour system is configured to start using swap with [$((100-valorswap))%] of use of the main memory.\n"
+
+echo -e "\nTo alter this, edit the file /etc/sysctl.conf as superuser and add, or uncomment, the line vm.swappiness. E.g. vm.swappiness=10 tells the system to start using swap only after using 90% of the main memory. The standard value of 60 tells the system to start using swap with just 40% of main memory's usage.\n"
+echo ""
