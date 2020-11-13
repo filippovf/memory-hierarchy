@@ -16,7 +16,7 @@ echo -e "\nHierarquia de Memória:\n"
 #MEMÓRIA CACHE
 echo -e "\nMEMÓRIA CACHE\n"
 echo -e -n "Microprocessador ["$(lscpu | grep -i nome || lscpu | grep -i name)"] com a seguinte configuração de memória cache:\n\n"
-lscpu -C 2> /null || lscpu | grep cache
+lscpu -C 2> /dev/null || lscpu | grep cache
 #O comando lscpu exibe informações sobre o microprocessador
 
 #MEMÓRIA PRINCIPAL
