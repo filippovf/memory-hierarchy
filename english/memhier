@@ -15,7 +15,7 @@ echo -e "\nMemory Hierarchy:\n"
 #CACHE MEMORY
 echo -e "\nCACHE MEMORY\n"
 echo -e -n "Microprocessor ["$(lscpu | grep -i nome || lscpu | grep -i name)"] with the following cache memory configuration:\n\n"
-lscpu -C || lscpu | grep cache
+lscpu -C 2> /dev/null || lscpu | grep cache
 
 #MAIN MEMORY
 echo -e "\n\nMAIN MEMORY\n"
