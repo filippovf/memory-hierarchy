@@ -1,8 +1,8 @@
 # memory-hierarchy
 
-A bash shell script to show information about memory hierarchy. Designed to illustrate operating systems and computer architecture and organization undergraduate classes.
+A bash shell script to show information about memory hierarchy. Designed to illustrate undergraduate classes in operating systems and computer architecture and organization.
 
-Tested in Ubuntu 16.04LTS and 18.04LTS and also in Ubuntu at Windows Subsystem for Linux, but should work in any Linux distribution.
+It was tested on Ubuntu Linux LTS from 16.04 to 20.04, as well as Ubuntu at Windows Subsystem for Linux. But it should work on any Linux distribution!
 
 To run the script just download the file, make it executable (chmod +x memhier) and then run:
 
