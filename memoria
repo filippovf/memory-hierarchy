@@ -30,10 +30,8 @@ echo -e "\n\nMEMÓRIA SECUNDÁRIA\n"
 lsblk --output VENDOR,MODEL,STATE,TRAN,NAME,TYPE,SIZE,FSTYPE,MOUNTPOINT,HOTPLUG --exclude 7
 #O comando lsblk exibe informações sobre a memória secundária (dispositivos de armaenamento em bloco)
 
-echo -e "\n\nPara ver o uso da memória secundária execute 'df -h'. Se quiser uma saída mais legível e melhor filtrada, use:"
-
-echo -e "\t\ndf -ha | head -n1 && df -ha | grep -i sd || df -ha | grep -i mnt || df -ha | grep -i mmc"
-
+echo -e "\n\nPara ver o uso da memória secundária execute 'df -h'. Se quiser uma saída mais legível e melhor filtrada, use 'df -ha | head -n1 && df -ha | grep -i sd || df -ha | grep -i mnt || df -ha | grep -i mmc' para:\n"
+df -ha | head -n1 && df -ha | grep -i sd || df -ha | grep -i mnt || df -ha | grep -i mmc
 echo -e "\nPara ver mais informações sobre seu hardware de memória execute o comando 'lshw' como administrador (sudo lshw). Será mais fácil visualizar as informações executando 'sudo lshw -html > hwinfo.html' e abrindo o arquivo no navegador.\n"
 
 #Faz aguardar uma tecla para continuar.
