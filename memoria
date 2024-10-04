@@ -1,13 +1,15 @@
 #!/bin/bash
 #Script para informações sobre a hierarquia de memória do computador.
 #Prof. Filippo Valiante Filho
-#Version 1.03
-#2020-11-13
+#https://prof.valiante.info
+#Version 1.1
+#2024-10-03
 
 #Verificação prévia da configuração de swap
 #O cálculo do % da memória principal a partir da qual se inicia o uso do swap é feito com $((100-valorswap))
 #Carrega a variável valorswap com o a saída do arquivo que contém o valor de swappiness
 valorswap=$(cat /proc/sys/vm/swappiness)
+isswap=$(wc -l < /proc/swaps) #verifica se o swap está configurado
 
 #Início das informações
 clear
@@ -30,8 +32,8 @@ echo -e "\n\nMEMÓRIA SECUNDÁRIA\n"
 lsblk --output VENDOR,MODEL,STATE,TRAN,NAME,TYPE,SIZE,FSTYPE,MOUNTPOINT,HOTPLUG --exclude 7
 #O comando lsblk exibe informações sobre a memória secundária (dispositivos de armaenamento em bloco)
 
-echo -e "\n\nPara ver o uso da memória secundária execute 'df -h'. Se quiser uma saída mais legível e melhor filtrada, use 'df -ha | head -n1 && df -ha | grep -i sd || df -ha | grep -i mnt || df -ha | grep -i mmc' para obter:\n"
-df -ha | head -n1 && df -ha | grep -i sd || df -ha | grep -i mnt || df -ha | grep -i mmc
+echo -e "\n\nPara ver o uso da memória secundária execute 'df -hT'. Se quiser uma saída mais legível e melhor filtrada, use 'df -haT | head -n1 && df -haT | grep -iE '/sd|/mnt|/mmc|/sr|/sg|/xvd|/hd|/ssd|/md' para obter:\n"
+df -haT | head -n1 && df -haT | grep -iE '/sd|/mnt|/mmc|/sr|/sg|/xvd|/hd|/ssd|/md'
 echo -e "\nPara ver mais informações sobre seu hardware de memória execute o comando 'lshw' como administrador (sudo lshw). Será mais fácil visualizar as informações executando 'sudo lshw -html > hwinfo.html' e abrindo o arquivo no navegador.\n"
 
 #Faz aguardar uma tecla para continuar.
@@ -40,19 +42,23 @@ read -r -p "***   Pressione qualquer tecla para ver informações sobre a MEMÓR
 
 #MEMÓRIA VIRTUAL
 echo -e "\n\nMEMÓRIA VIRTUAL - SWAP\n"
-free -h | head -n1
-free -h | grep -i swap
-echo -e -n "\nSwap configurado em ["$(cut -c 1-14 < /proc/swaps | tail -n1)"].\n"
-#cut é usado para ajustar a quantidade de colunas a serem exibidas do arquivo /proc/swaps
-#seguido de tail para ajustar a quantidade de linhas
+if [ $isswap -eq 1 ]
+then
+        echo -e -n "\nSwap não configurado!\n"
+else
+        echo -e -n "\nSwap configurado em ["$(cut -c 1-14 < /proc/swaps | tail -n1)"].\n"
+        #cut é usado para ajustar a quantidade de colunas a serem exibidas do arquivo /proc/swaps
+        #seguido de tail para ajustar a quantidade de linhas
+        free -h | head -n1
+        free -h | grep -i swap
+fi
 
 echo -e "\n\nMEMÓRIA VIRTUAL - TOTAL\n"
-free -h | head -n1
+free -ht | head -n1
 free -ht | tail -n1
 
 echo -e "\n\nO espaço de endereçamento está organizado da seguinte forma:\n"
 cat /proc/cpuinfo | grep address | head -n1
 
-echo -e "\n\nSeu sistema está configurado para começar a usar swap a partir de [$((100-valorswap))%] de uso da memória principal.\n"
-echo -e '\nPara alterar edite como superusuário o arquivo /etc/sysctl.conf e acrescente, ou remova o comentário, da linha vm.swappiness. Por exemplo, vm.swappiness=10 indica que o swap inicia apenas com 90% de uso da memória principal. O valor padrão 60 indica que o swap inicia a partir de 40% de uso da memória principal.\n'
-echo ""
+echo -e "\n\nCaso seu sistema esteja com o swap configurado ele será acionado a partir de [$((100-valorswap))%] de uso da memória principal."
+echo -e '\nPara alterar edite como superusuário o arquivo /etc/sysctl.conf e acrescente, ou remova o comentário, da linha vm.swappiness. Por exemplo, vm.swappiness=10 indica que o swap inicia apenas com 90% de uso da memória principal. O valor padrão 60 indica que o swap inicia a partir de 40% de uso da memória principal.\n\n'
