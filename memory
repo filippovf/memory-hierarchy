@@ -1,12 +1,14 @@
 #!/bin/bash
 ##Script to show information regarding the computer's memory hierarchy.
 #Prof. Filippo Valiante Filho
-#Version 1.03
-#2020-11-13
+#https://prof.valiante.info
+#Version 1.1
+#2024-10-03
 
 #Previous verification of swap configuration.
 #The % of use of the main memory where the system starts to use swap is calculated using $((100-valorswap)).
 valorswap=$(cat /proc/sys/vm/swappiness)
+isswap=$(wc -l < /proc/swaps) #check if swap is configured
 
 #Beginning of information
 clear
@@ -25,10 +27,8 @@ free -h | head -n2
 echo -e "\n\nSECONDARY MEMORY\n"
 lsblk --output VENDOR,MODEL,STATE,TRAN,NAME,TYPE,SIZE,FSTYPE,MOUNTPOINT,HOTPLUG --exclude 7
 
-echo -e "\n\nTo see information about the secondary memory run  'df -h'. If you want something more readable try 'df -ha | head -n1 && df -ha | grep -i sd || df -ha | grep -i mnt || df -ha | grep -i mmc' to get:\n"
-
-df -ha | head -n1 && df -ha | grep -i sd || df -ha | grep -i mnt || df -ha | grep -i mmc
-
+echo -e "\n\nTo see information about the secondary memory run  'df -hT'. If you want something more readable try 'df -haT | head -n1 && df -haT | grep -iE '/sd|/mnt|/mmc|/sr|/sg|/xvd|/hd|/ssd|/md|/dev/root' to get:\n"
+df -haT | head -n1 && df -haT | grep -iE '/sd|/mnt|/mmc|/sr|/sg|/xvd|/hd|/ssd|/md|/dev/root'
 echo -e "\nTo see more information regarding your memory's hardware run 'lshw' as administrator (sudo lshw). Information will be easier to visualize if you run  'sudo lshw -html > hwinfo.html' and open the file in the web browser.\n"
 
 #Waits for a key before continuing.
@@ -36,18 +36,22 @@ read -r -p "***   Press any key to see information about VIRTUAL MEMORY.   ***" 
 
 #MEMÓRIA VIRTUAL
 echo -e "\n\nVIRTUAL MEMORY - SWAP\n"
-free -h | head -n1
-free -h | grep -i swap
-echo -e -n "\nSwap configured in ["$(cut -c 1-14 < /proc/swaps | tail -n1)"].\n"
+if [ $isswap -eq 1 ]
+then
+        echo -e -n "\nSwap is not configured!\n"
+else
+        echo -e -n "\nSwap configured in ["$(cut -c 1-14 < /proc/swaps | tail -n1)"].\n"
+        free -h | head -n1
+        free -h | grep -i swap
+fi
 
 echo -e "\n\nVIRTUAL MEMORY - TOTAL\n"
-free -h | head -n1
+free -ht | head -n1
 free -ht | tail -n1
 
 echo -e "\n\nThe address space is organized as follows:\n"
 cat /proc/cpuinfo | grep address | head -n1
 
-echo -e "\n\nYour system is configured to start using swap with [$((100-valorswap))%] of use of the main memory.\n"
+echo -e "\n\nYour system is configured to start using swap with [$((100-valorswap))%] of use of the main memory."
 
-echo -e "\nTo alter this, edit the file /etc/sysctl.conf as superuser and add, or uncomment, the line vm.swappiness. E.g. vm.swappiness=10 tells the system to start using swap only after using 90% of the main memory. The standard value of 60 tells the system to start using swap with just 40% of main memory's usage.\n"
-echo ""
+echo -e "\nTo alter this, edit the file /etc/sysctl.conf as superuser and add, or uncomment, the line vm.swappiness. E.g. vm.swappiness=10 tells the system to start using swap only after using 90% of the main memory. The standard value of 60 tells the system to start using swap with just 40% of main memory's usage.\n\n"
