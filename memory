@@ -27,8 +27,8 @@ free -h | head -n2
 echo -e "\n\nSECONDARY MEMORY\n"
 lsblk --output VENDOR,MODEL,STATE,TRAN,NAME,TYPE,SIZE,FSTYPE,MOUNTPOINT,HOTPLUG --exclude 7
 
-echo -e "\n\nTo see information about the secondary memory run  'df -hT'. If you want something more readable try 'df -haT | head -n1 && df -haT | grep -iE '/sd|/mnt|/mmc|/sr|/sg|/xvd|/hd|/ssd|/md' to get:\n"
-df -haT | head -n1 && df -haT | grep -iE '/sd|/mnt|/mmc|/sr|/sg|/xvd|/hd|/ssd|/md'
+echo -e "\n\nTo see information about the secondary memory run  'df -hT'. If you want something more readable try 'df -haT | head -n1 && df -haT | grep -iE '/sd|/mnt|/mmc|/sr|/sg|/xvd|/hd|/ssd|/md|/dev/root' to get:\n"
+df -haT | head -n1 && df -haT | grep -iE '/sd|/mnt|/mmc|/sr|/sg|/xvd|/hd|/ssd|/md|/dev/root'
 echo -e "\nTo see more information regarding your memory's hardware run 'lshw' as administrator (sudo lshw). Information will be easier to visualize if you run  'sudo lshw -html > hwinfo.html' and open the file in the web browser.\n"
 
 #Waits for a key before continuing.
