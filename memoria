@@ -2,8 +2,8 @@
 #Script para informações sobre a hierarquia de memória do computador.
 #Prof. Filippo Valiante Filho
 #https://prof.valiante.info
-#Version 1.1
-#2024-10-03
+#Version 1.11
+#2024-10-05
 
 #Verificação prévia da configuração de swap
 #O cálculo do % da memória principal a partir da qual se inicia o uso do swap é feito com $((100-valorswap))
@@ -18,7 +18,7 @@ echo -e "\nHierarquia de Memória do computador [$(hostname)]:\n"
 #MEMÓRIA CACHE
 echo -e "\nMEMÓRIA CACHE\n"
 echo -e -n "Microprocessador ["$(lscpu | grep -i nome || lscpu | grep -i name)"] com a seguinte configuração de memória cache:\n\n"
-lscpu -C 2> /dev/null || lscpu | grep cache
+lscpu -C --output-all 2> /dev/null || lscpu | grep cache
 #O comando lscpu exibe informações sobre o microprocessador
 # 2> /dev/null redireciona o canal de saída do erro padrão (stderror) para /dev/null prevenindo a mensagem de erro das versões mais antigas
 
