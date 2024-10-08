@@ -2,8 +2,8 @@
 ##Script to show information regarding the computer's memory hierarchy.
 #Prof. Filippo Valiante Filho
 #https://prof.valiante.info
-#Version 1.11
-#2024-10-05
+#Version 1.12
+#2024-10-08
 
 #Previous verification of swap configuration.
 #The % of use of the main memory where the system starts to use swap is calculated using $((100-valorswap)).
@@ -16,26 +16,28 @@ echo -e "\nMemory Hierarchy of computer [$(hostname)]:\n"
 
 #CACHE MEMORY
 echo -e "\nCACHE MEMORY\n"
-echo -e -n "Microprocessor ["$(lscpu | grep -i nome || lscpu | grep -i name)"] with the following cache memory configuration:\n\n"
+echo -e -n "Microprocessor ["$(lscpu | grep -iE 'nome|name')"] with "$(nproc --all)" CPU(s) and the following cache memory configuration:\n\n"
 lscpu -C --output-all 2> /dev/null || lscpu | grep cache
 
 #MAIN MEMORY
 echo -e "\n\nMAIN MEMORY\n"
+lsmem
+echo ""
 free -h | head -n2
 
 #SECONDARY MEMORY
 echo -e "\n\nSECONDARY MEMORY\n"
 lsblk --output VENDOR,MODEL,STATE,TRAN,NAME,TYPE,SIZE,FSTYPE,MOUNTPOINT,HOTPLUG --exclude 7
 
-echo -e "\n\nTo see information about the secondary memory run  'df -hT'. If you want something more readable try 'df -haT | head -n1 && df -haT | grep -iE '/sd|/mnt|/mmc|/sr|/sg|/xvd|/hd|/ssd|/md|/dev/root' to get:\n"
-df -haT | head -n1 && df -haT | grep -iE '/sd|/mnt|/mmc|/sr|/sg|/xvd|/hd|/ssd|/md|/dev/root'
-echo -e "\nTo see more information regarding your memory's hardware run 'lshw' as administrator (sudo lshw). Information will be easier to visualize if you run  'sudo lshw -html > hwinfo.html' and open the file in the web browser.\n"
+echo -e "\n\nTo see information about the secondary memory run  'df -hT'. If you want something more readable try df -haT | head -n1 && df -haT | grep -iE '/sd|/mnt|/mmc|/sr|/sg|/xvd|/hd|/ssd|/md|/dev/root' to get:\n"
+df -hT | head -n1 && df -hT | grep -iE '/sd|/mnt|/mmc|/sr|/sg|/xvd|/hd|/ssd|/md|/dev/root'
+echo -e "\n\nTo see more information regarding your memory's hardware run 'lshw' as administrator (sudo lshw). Information will be easier to visualize if you run  'sudo lshw -html > hwinfo.html' and open the file in the web browser.\n\n"
 
 #Waits for a key before continuing.
 read -r -p "***   Press any key to see information about VIRTUAL MEMORY.   ***" -n 1
 
 #MEMÓRIA VIRTUAL
-echo -e "\n\nVIRTUAL MEMORY - SWAP\n"
+echo -e "\n\n\nVIRTUAL MEMORY - SWAP\n"
 if [ $isswap -eq 1 ]
 then
         echo -e -n "\nSwap is not configured!\n"
