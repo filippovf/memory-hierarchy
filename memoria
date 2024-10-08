@@ -1,9 +1,9 @@
 #!/bin/bash
-#Script para informações sobre a hierarquia de memória do computador.
+#Script para mostrar informações sobre a hierarquia de memória do computador.
 #Prof. Filippo Valiante Filho
 #https://prof.valiante.info
-#Version 1.11
-#2024-10-05
+#Version 1.12
+#2024-10-08
 
 #Verificação prévia da configuração de swap
 #O cálculo do % da memória principal a partir da qual se inicia o uso do swap é feito com $((100-valorswap))
@@ -17,13 +17,15 @@ echo -e "\nHierarquia de Memória do computador [$(hostname)]:\n"
 
 #MEMÓRIA CACHE
 echo -e "\nMEMÓRIA CACHE\n"
-echo -e -n "Microprocessador ["$(lscpu | grep -i nome || lscpu | grep -i name)"] com a seguinte configuração de memória cache:\n\n"
+echo -e -n "Microprocessador ["$(lscpu | grep -iE 'nome|name')"] com "$(nproc --all)" CPU(s) e a seguinte configuração de memória cache:\n\n"
 lscpu -C --output-all 2> /dev/null || lscpu | grep cache
 #O comando lscpu exibe informações sobre o microprocessador
 # 2> /dev/null redireciona o canal de saída do erro padrão (stderror) para /dev/null prevenindo a mensagem de erro das versões mais antigas
 
 #MEMÓRIA PRINCIPAL
 echo -e "\n\nMEMÓRIA PRINCIPAL\n"
+lsmem
+echo ""
 free -h | head -n2
 #O comando free exibe informações sobre a memória principal e virtual
 
@@ -32,16 +34,16 @@ echo -e "\n\nMEMÓRIA SECUNDÁRIA\n"
 lsblk --output VENDOR,MODEL,STATE,TRAN,NAME,TYPE,SIZE,FSTYPE,MOUNTPOINT,HOTPLUG --exclude 7
 #O comando lsblk exibe informações sobre a memória secundária (dispositivos de armaenamento em bloco)
 
-echo -e "\n\nPara ver o uso da memória secundária execute 'df -hT'. Se quiser uma saída mais legível e melhor filtrada, use 'df -haT | head -n1 && df -haT | grep -iE '/sd|/mnt|/mmc|/sr|/sg|/xvd|/hd|/ssd|/md|/dev/root' para obter:\n"
-df -haT | head -n1 && df -haT | grep -iE '/sd|/mnt|/mmc|/sr|/sg|/xvd|/hd|/ssd|/md|/dev/root'
-echo -e "\nPara ver mais informações sobre seu hardware de memória execute o comando 'lshw' como administrador (sudo lshw). Será mais fácil visualizar as informações executando 'sudo lshw -html > hwinfo.html' e abrindo o arquivo no navegador.\n"
+echo -e "\n\nPara ver o uso da memória secundária execute 'df -hT'. Se quiser uma saída mais legível e melhor filtrada, use df -hT | head -n1 && df -hT | grep -iE '/sd|/mnt|/mmc|/sr|/sg|/xvd|/hd|/ssd|/md|/dev/root' para obter:\n"
+df -hT | head -n1 && df -hT | grep -iE '/sd|/mnt|/mmc|/sr|/sg|/xvd|/hd|/ssd|/md|/dev/root'
+echo -e "\n\nPara ver mais informações sobre seu hardware de memória execute o comando 'lshw' como administrador (sudo lshw). Será mais fácil visualizar as informações executando 'sudo lshw -html > hwinfo.html' e abrindo o arquivo no navegador.\n\n"
 
 #Faz aguardar uma tecla para continuar.
 read -r -p "***   Pressione qualquer tecla para ver informações sobre a MEMÓRIA VIRTUAL.   ***" -n 1
 #O comando read lê o teclado, na configuração utilizada exibe uma mensagem e faz uma pausa até que se pressione qualquer tecla.
 
 #MEMÓRIA VIRTUAL
-echo -e "\n\nMEMÓRIA VIRTUAL - SWAP\n"
+echo -e "\n\n\nMEMÓRIA VIRTUAL - SWAP"
 if [ $isswap -eq 1 ]
 then
         echo -e -n "\nSwap não configurado!\n"
