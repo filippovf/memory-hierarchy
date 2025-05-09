@@ -29,9 +29,11 @@ free -h | head -n2
 echo -e "\n\nSECONDARY MEMORY\n"
 lsblk --output VENDOR,MODEL,STATE,TRAN,NAME,TYPE,SIZE,FSTYPE,MOUNTPOINT,HOTPLUG --exclude 7
 
-echo -e "\n\nTo see information about the secondary memory run  'df -hT'. If you want something more readable try df -haT | head -n1 && df -haT | grep -iE '/sd|/mnt|/mmc|/sr|/sg|/xvd|/hd|/ssd|/md|/dev/root' to get:\n"
-df -hT | head -n1 && df -hT | grep -iE '/sd|/mnt|/mmc|/sr|/sg|/xvd|/hd|/ssd|/md|/dev/root'
-echo -e "\n\nTo see more information regarding your memory's hardware run 'lshw' as administrator (sudo lshw). Information will be easier to visualize if you run  'sudo lshw -html > hwinfo.html' and open the file in the web browser.\n\n"
+echo -e "\n\nTo see information about the secondary memory run 'df -hTx tmpfs'. If you want something more readable try 'df -hTx tmpfs -x efivarfs' to get:\n"
+df -hTx tmpfs -x efivarfs
+#The old version used a complicated but functional construction:
+#df -hT | head -n1 && df -hT | grep -iE '/sd|/mnt|/mmc|/sr|/sg|/xvd|/hd|/ssd|/md|/dev/root'
+echo -e "\n\nTo see more information regarding your memory's hardware run 'lshw' as administrator (sudo lshw). The information will be easier to visualize if you run  'sudo lshw -html > hwinfo.html' and open the file in a web browser.\n\n"
 
 #Waits for a key before continuing.
 read -r -p "***   Press any key to see information about VIRTUAL MEMORY.   ***" -n 1
