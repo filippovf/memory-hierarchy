@@ -2,8 +2,8 @@
 ##Script to show information regarding the computer's memory hierarchy.
 #Prof. Filippo Valiante Filho
 #https://prof.valiante.info
-#Version 1.12
-#2024-10-08
+#Version 1.13
+#2025-05-09
 
 #Previous verification of swap configuration.
 #The % of use of the main memory where the system starts to use swap is calculated using $((100-valorswap)).
